@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ContactDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="tblContact">
+    <Key>
+      <PropertyRef Name="contact_id" />
+    </Key>
+    <Property Name="contact_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="contact_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="contact_email" Type="nvarchar(max)" />
+    <Property Name="contact_number" Type="nchar" MaxLength="15" />
+    <Property Name="customer_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblCustomer">
+    <Key>
+      <PropertyRef Name="customer_id" />
+    </Key>
+    <Property Name="customer_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="customer_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="latitude" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="longitude" Type="decimal" Precision="18" Scale="0" />
+  </EntityType>
+  <Association Name="FK_tblContact_tblCustomer">
+    <End Role="tblCustomer" Type="Self.tblCustomer" Multiplicity="1" />
+    <End Role="tblContact" Type="Self.tblContact" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblCustomer">
+        <PropertyRef Name="customer_id" />
+      </Principal>
+      <Dependent Role="tblContact">
+        <PropertyRef Name="customer_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ContactDBModelStoreContainer">
+    <EntitySet Name="tblContact" EntityType="Self.tblContact" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblCustomer" EntityType="Self.tblCustomer" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_tblContact_tblCustomer" Association="Self.FK_tblContact_tblCustomer">
+      <End Role="tblCustomer" EntitySet="tblCustomer" />
+      <End Role="tblContact" EntitySet="tblContact" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
